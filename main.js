@@ -3,7 +3,7 @@
 tasksJson = '[ {"title": "Example task", "assignedTo": "Coco", "description": "task assigned to Coco", "dueDate": "10/6/2023", "status": "inprocess"}]';
 
 let cardId = 1;
-const tasks = JSON.parse(tasksJson);
+let tasks = JSON.parse(tasksJson);
 
 
 const cardDeck = document.getElementById('card-deck');
@@ -14,6 +14,7 @@ for(let i = 0; i < tasks.length; i++) {
 }
 // display card
 function creatCardElement(task) {
+    task.id = cardId;
     // <div class="card">
     const eleCard = document.createElement('div');
     eleCard.classList.add('card');
@@ -72,8 +73,32 @@ function creatCardElement(task) {
 
 function taskAdd () {
 const name = document.getElementById('name').value;
+if(name.length == 0){
+    alert("Please input name");
+    return;
+}
+if(name.length > 8){
+    alert("Name is too long");
+    return;
+}
 const description = document.getElementById('description').value;
+if(description.length == 0){
+    alert("Please input description");
+    return;
+}
+if(description.length > 50){
+    alert("Description is too long");
+    return;
+}
 const assignedTo = document.getElementById('assignedTo').value;
+if(assignedTo.length == 0){
+    alert("Please input name");
+    return;
+}
+if(assignedTo.length > 8){
+    alert("Name is too long");
+    return;
+}
 const dueDate = document.getElementById('dueDate').value;
 const status = document.getElementById('status').value;
 let card = {
@@ -83,6 +108,7 @@ let card = {
     dueDate: dueDate,
     status: status,
 }
+tasks.push(card);
 let cardEle = creatCardElement(card);
    cardDeck.appendChild(cardEle);
 }
