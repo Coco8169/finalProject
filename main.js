@@ -61,6 +61,7 @@ function creatCardElement(task) {
    deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');
    deleteButton.addEventListener('click', function() {
     eleCard.remove();
+    removeFromArray(task.id);
   });
    eleCardBody.appendChild(deleteButton);
    const i = document.createElement('i');
@@ -69,6 +70,15 @@ function creatCardElement(task) {
    cardId++;
     return eleCard;
     
+}
+
+function removeFromArray(taskid) {
+    for(let i = 0; i < tasks.length; i++) {
+        if (tasks[i].id === taskid) {
+            tasks.splice(i, 1);
+            break;
+        }
+    }
 }
 
 function taskAdd () {
