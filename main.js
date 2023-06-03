@@ -1,8 +1,8 @@
 
 
-tasksJson = '[ {"title": "task1", "assignedTo": "Coco", "description": "task assigned to Coco", "dueDate": "10/6/2023", "status": "inprocess"}, \
-{"title": "task2", "assignedTo": "Coco", "description": "task assigned to Coco", "dueDate": "12/6/2023", "status": "inprocess"} ]';
+tasksJson = '[ {"title": "Example task", "assignedTo": "Coco", "description": "task assigned to Coco", "dueDate": "10/6/2023", "status": "inprocess"}]';
 
+let cardId = 1;
 const tasks = JSON.parse(tasksJson);
 
 
@@ -24,52 +24,66 @@ function creatCardElement(task) {
     //<h5 class="card-title" id="task-title">Task Name</h5>
     const eleCardTitle = document.createElement('h5');
     eleCardTitle.classList.add('card-title');
-    eleCardTitle.setAttribute('id', `task-title-${task.id}`);
+    eleCardTitle.setAttribute('id', `task-title-${cardId}`);
     eleCardTitle.textContent = task.title;
     eleCardBody.appendChild(eleCardTitle);
     //<h6 class="card-subtitle mb-2 text-muted" id="assigned-to">Assigned to: </h6>
     const eleCardAssignedTo = document.createElement('h6');
     eleCardAssignedTo.classList.add('card-subtitle', 'mb-2', 'text-muted');
-    eleCardAssignedTo.setAttribute('id', `assigned-to-${task.id}`);
+    eleCardAssignedTo.setAttribute('id', `assigned-to-${cardId}`);
     eleCardAssignedTo.textContent = `Assigned to:  ${task.assignedTo}`;
     eleCardBody.appendChild(eleCardAssignedTo);
     //<p class="card-text" id="task-description">Task description</p>
     const eleCardDescription = document.createElement('p');
     eleCardDescription.classList.add('card-text');
-    eleCardDescription.setAttribute('id', `task-description-${task.id}`);
+    eleCardDescription.setAttribute('id', `task-description-${cardId}`);
     eleCardDescription.textContent = `Task Description: ${task.description}`;
     eleCardBody.appendChild(eleCardDescription);
     //<p class="card-text" id="due-date">Due date: </p>
     const eleCardDueDate = document.createElement('p');
     eleCardDueDate.classList.add('card-text');
-    eleCardDueDate.setAttribute('id', `due-date-${task.id}`);
+    eleCardDueDate.setAttribute('id', `due-date-${cardId}`);
     eleCardDueDate.textContent = `Task Duedate: ${task.dueDate}`;
     eleCardBody.appendChild(eleCardDueDate);
     //<p class="card-text" id="task-status">Status: </p>
     const eleCardStatus = document.createElement('p');
     eleCardStatus.classList.add('card-text');
-    eleCardStatus.setAttribute('id', `task-status-${task.id}`);
+    eleCardStatus.setAttribute('id', `task-status-${cardId}`);
     eleCardStatus.textContent = `Task Status: ${task.status}`;
     eleCardBody.appendChild(eleCardStatus);
     // delete button
     /*
 
-    <button class="delete">
-        <i class="far fa-trash-alt" style="font-size: 24px; color: red;"></i>
-    </button>
+   <a href="#" class="btn-danger btn-sm"><i class="fas fa-trash fa-sm" ></i></a>
     */
-   const deleteButton = document.createElement('button');
-   deleteButton.classList.add('delete');
+   const deleteButton = document.createElement('a');
+   deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');
+   deleteButton.addEventListener('click', function() {
+    eleCard.remove();
+  });
    eleCardBody.appendChild(deleteButton);
    const i = document.createElement('i');
-   i.classList.add('far', 'fa-trash-alt');
-   i.setAttribute('style',"font-size: 24px; color: red;" );
+   i.classList.add('fas', 'fa-trash', 'fa-sm');
    deleteButton.appendChild(i);
+   cardId++;
     return eleCard;
     
 }
 
 function taskAdd () {
-
+const name = document.getElementById('name').value;
+const description = document.getElementById('description').value;
+const assignedTo = document.getElementById('assignedTo').value;
+const dueDate = document.getElementById('dueDate').value;
+const status = document.getElementById('status').value;
+let card = {
+    title: name,
+    assignedTo: assignedTo,
+    description: description,
+    dueDate: dueDate,
+    status: status,
+}
+let cardEle = creatCardElement(card);
+   cardDeck.appendChild(cardEle);
 }
 
