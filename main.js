@@ -15,6 +15,7 @@ class TaskManager {
         status: status,
       };
       this.tasks.push(card);
+      this.save();
       const cardElement = this.createCardElement(card);
       this.appendCardElement(cardElement);
       this.cardId++;
@@ -24,12 +25,17 @@ class TaskManager {
       const index = this.tasks.findIndex(task => task.id === taskId);
       if (index !== -1) {
         this.tasks.splice(index, 1);
+        this.save();
         this.removeCardElement(taskId);
       }
     }
-
-    toJson() {
-        return JSON.stringify(this.tasks);
+    //save to local storage
+    save() {
+        localStorage.setItem("tasks", JSON.stringify(this.tasks));
+    }
+    //
+    getTasks() {
+        return localStorage.getItem("tasks");
     }
   
     //create card
@@ -103,7 +109,7 @@ class TaskManager {
   
 const taskManager = new TaskManager();
 
-const examplesJson = '[{"title": "Example task", "assignedTo": "Coco", "description": "task assigned to Coco", "dueDate": "10/6/2023", "status": "inprocess"}]';
+const examplesJson = taskManager.getTasks();
 const examples = JSON.parse(examplesJson);
 //display example cards
 for(let i = 0; i < examples.length; i++) {
@@ -112,33 +118,28 @@ for(let i = 0; i < examples.length; i++) {
 
 function taskAdd() {
     const name = document.getElementById('name').value;
-    if(name.length == 0){
-        alert("Please input name");
-        return;
-    }
-    if(name.length > 8){
-        alert("Name is too long");
+
+    if(name.length < 8){
+        alert("Name must longer than 8 characters");
         return;
     }
     const description = document.getElementById('description').value;
-    if(description.length == 0){
-        alert("Please input description");
-        return;
-    }
-    if(description.length > 50){
-        alert("Description is too long");
+    
+    if(description.length < 15){
+        alert("Description must longer than 15 characters");
         return;
     }
     const assignedTo = document.getElementById('assignedTo').value;
-    if(assignedTo.length == 0){
-        alert("Please input name");
-        return;
-    }
-    if(assignedTo.length > 8){
-        alert("Name is too long");
+   
+    if(assignedTo.length < 8){
+        alert("Name must longer than 8 characters");
         return;
     }
     const dueDate = document.getElementById('dueDate').value;
+    if(dueDate.length === 0){
+        alert("You need to choose a date");
+        return;
+    }
     const status = document.getElementById('status').value;
     taskManager.addTask(name, description, assignedTo, dueDate, status);
   }
