@@ -29,6 +29,17 @@ class TaskManager {
         this.removeCardElement(taskId);
       }
     }
+
+    markDone(taskId) {
+        const index = this.tasks.findIndex(task => task.id === taskId);
+        if (index !== -1) {
+            this.tasks[index].status = "done";
+            this.save();
+            document.getElementById(`task-status-${taskId}`).textContent = `Task Status: done`;
+        }
+
+
+    }
     //save to local storage
     save() {
         localStorage.setItem("tasks", JSON.stringify(this.tasks));
@@ -40,7 +51,7 @@ class TaskManager {
   
     //create card
     createCardElement(task) {
-        // <div class="card">
+        // <div class="card" id="card-xx">
         const eleCard = document.createElement('div');
         eleCard.setAttribute('id', `card-${task.id}`);
         eleCard.classList.add('card');
@@ -78,10 +89,25 @@ class TaskManager {
         eleCardStatus.setAttribute('id', `task-status-${task.id}`);
         eleCardStatus.textContent = `Task Status: ${task.status}`;
         eleCardBody.appendChild(eleCardStatus);
+        //mark as done button
+        //<a href="#" class="btn btn-md"> <i class="fa fa-check-circle fa-2x"></i></a>
+        if (task.status !== "done") {
+        const checkButton = document.createElement('a');
+        checkButton.classList.add('btn', 'btn-md');
+        checkButton.addEventListener('click', function() {
+            taskManager.markDone(task.id);
+            checkButton.remove();
+        });
+        eleCardBody.appendChild(checkButton);
+        const icheck = document.createElement('i');
+        icheck.classList.add('fa', 'fa-check-circle', 'fa-2x');
+        checkButton.appendChild(icheck);
+        }
         // delete button
         /*
-        <a href="#" class="btn-danger btn-sm"><i class="fas fa-trash fa-sm" ></i></a>
+        <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm" ></i></a>
         */
+        
         const deleteButton = document.createElement('a');
         deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');
         deleteButton.addEventListener('click', function() {
@@ -105,12 +131,16 @@ class TaskManager {
         cardElement.remove();
       }
     }
+
+    updateCardElement(taskId, task) {
+
+    }
   }
   
 const taskManager = new TaskManager();
 
-const examplesJson = taskManager.getTasks();
-const examples = JSON.parse(examplesJson);
+const localJson = taskManager.getTasks();
+const examples = JSON.parse(localJson);
 //display example cards
 for(let i = 0; i < examples.length; i++) {
     taskManager.addTask(examples[i].title, examples[i].description, examples[i].assignedTo, examples[i].dueDate, examples[i].status);
