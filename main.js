@@ -46,7 +46,11 @@ class TaskManager {
     }
     //
     getTasks() {
-        return localStorage.getItem("tasks");
+        let tasks = localStorage.getItem("tasks");
+        if (tasks === null) {
+            tasks = "[]";
+        }
+        return tasks;
     }
   
     //create card
