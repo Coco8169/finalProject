@@ -1,13 +1,17 @@
 
 class TaskManager {
     constructor() {
-      this.cardId = 1;
+        this.taskId = 1;
+        if (localStorage.getItem('taskId') !== null && localStorage.getItem('taskId') !== 'NaN') {
+            this.taskId = Number(localStorage.getItem('taskId'));
+        }
+      
       this.tasks = [];
     }
   
     addTask(title, description, assignedTo, dueDate, status) {
       const card = {
-        id: this.cardId,
+        id: this.taskId,
         title: title,
         assignedTo: assignedTo,
         description: description,
@@ -18,7 +22,7 @@ class TaskManager {
       this.save();
       const cardElement = this.createCardElement(card);
       this.appendCardElement(cardElement);
-      this.cardId++;
+      this.taskId++;
     }
   
     removeTask(taskId) {
@@ -43,6 +47,7 @@ class TaskManager {
     //save to local storage
     save() {
         localStorage.setItem("tasks", JSON.stringify(this.tasks));
+        localStorage.setItem("taskId", this.taskId+1);
     }
     //
     getTasks() {
